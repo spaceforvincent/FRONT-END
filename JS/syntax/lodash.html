@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Document</title>
+</head>
+<body>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script>
+    _.sample([1, 2, 3, 4, 5])
+    _.sampleSize([1, 2, 3, 4, 5], 2)
+    _.reverse([1, 2, 3, 4, 5])
+    _.range(5)
+    _.range(1, 5)
+    _.range(1, 5, 2)
+
+    const original = { a: { b: 1 }}
+    const ref  = original
+    const copy = _.cloneDeep(original)
+
+    console.log(original.a.b, ref.a.b, copy.a.b)
+    ref.a.b = 10
+    console.log(original.a.b, ref.a.b, copy.a.b)
+    copy.a.b = 100
+    console.log(original.a.b, ref.a.b, copy.a.b)
+
+  </script>
+</body>
+</html>
