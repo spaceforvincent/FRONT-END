@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>String</h2>
+    <div v-for="ch in myStr">{{ ch }}</div>
+    <div v-for="(ch,idx) in myStr" :key="idx">{{ idx }} {{ ch }}
+    </div>
+    <h2>Array</h2>
+    <div v-for="(fruit,idx) in fruits" :key="`fruit-${idx}`">{{ fruit }}</div>
+    <h2>Object</h2>
+    <div v-for="todo in todos" :key="`todo-${idx}"> {{todo.title}} </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    const app = new Vue({
+      el : '#app',
+      data: {
+        fruits: ['apple','banana','watermelon'],
+        myStr: 'Hello World',
+        todos: [
+          { id : 1, title : 'todo1', completed : true},
+          { id : 2, title : 'todo2', completed : false},
+          { id : 3, title : 'todo3', completed : true},
+        ]
+      }
+    })
+  </script>
+</body>
+</html>
+

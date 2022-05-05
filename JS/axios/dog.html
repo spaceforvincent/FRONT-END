@@ -1,0 +1,20 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const URL = 'https://dog.ceo/api'
+    function fetchFirstDogImage(){
+        axios.get(URL + '/breeds/list/all')
+        .then(res => {
+            console.log(res)
+            const breed = Object.keys(res.data.message)[0]
+            return axios.get(URL + `/breed/${breed}/images`)
+        })
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(err => {
+            console.log(error)
+        })
+    }
+
+    fetchFirstDogImage()
+</script>

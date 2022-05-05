@@ -1,0 +1,25 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const URL = 'https://jsonplaceholder.typicode.com/todos/1/'
+    axios.get(URL)
+    //   .then(function (response) {
+    //     console.log(response)
+    //     return response.data
+    //   })
+    //   .then(function (data) {
+    //       console.log(data)
+    //       return data.title
+    //   })
+    //   .then(function (title) {
+    //       console.log(title)
+    //   })
+      .then(function(response){
+          console.log(response.data.title)
+      })
+      .catch(function (error) {
+          console.log(error)
+      })
+      .finally(function (){
+          console.log("이건 무조건 실행!")
+      })
+</script>
