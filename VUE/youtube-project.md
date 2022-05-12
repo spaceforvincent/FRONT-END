@@ -1,3 +1,7 @@
+# Youtube project
+
+
+
 ### 프로젝트 준비
 
 1. vue create youtube-project

@@ -1,3 +1,4 @@
+
 <template>
   <div>
       <input type="text"
@@ -9,7 +10,6 @@
 </template>
 
 <script>
-
 export default {
     name:'TodoForm',
     data: function() {
@@ -17,7 +17,7 @@ export default {
             todoTitle:'',
         }
     },
-    method: {
+    methods: {
       createTodo: function() {
             const todoItem = {
                 title: this.todoTitle,
@@ -25,11 +25,11 @@ export default {
                 date: new Date().getTime(),
             }
             if (todoItem.title) {
-            this.$store.dispatch('createTodo', todoItem)
+            this.$store.dispatch('createTodo', todoItem) //createTodo Action 함수 호출
         }
         this.todoTitle = '' //빈값이 들어가면 안넘어가도록
-        }
-    }   
+        },
+    },   
 }
 </script>
 

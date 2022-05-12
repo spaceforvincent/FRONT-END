@@ -1,12 +1,14 @@
 <template>
   <div>
+      <div>
       <span 
-      class = "abc"
       @click="updateTodoStatus"
-      :class = "{'is-completed' : todo.isCompleted}"
-      >{{ todo.title }}
+      :class="{ 'is-completed' : todo.isCompleted}"
+      >
+      {{ todo.title }}
       </span>
       <button @click="deleteTodo">[X]</button>
+  </div>
   </div>
 </template>
 
@@ -30,8 +32,8 @@ export default {
     }
 </script>
 
-<style scope>
+<style scoped>
     .is-completed {
-        text-decoration:"line-through"
+        text-decoration:line-through;
     }
 </style>
