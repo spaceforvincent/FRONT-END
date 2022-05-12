@@ -1,5 +1,5 @@
 <template>
-  <li>
+  <li @click="selectVideo">
       <img :src="video.snippet.thumbnails.default.url" alt="img">
       {{ video.snippet.title}}
   </li>
@@ -14,6 +14,11 @@ export default {
             required: true,
         }
 
+    },
+    methods:{
+        selectVideo: function(){
+            this.$emit('select-video', this.video)
+        }
     }
 }
 </script>

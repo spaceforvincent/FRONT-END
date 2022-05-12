@@ -6,7 +6,8 @@
     <the-search-bar @input-change="onInputChange"></the-search-bar>
     </header>
     <section>
-      <video-list :videos="videos"></video-list>
+      <video-detail :video="selectVideo"></video-detail>
+      <video-list :videos="videos" @select-video="onVideoSelect"></video-list>
     </section>
       </div>
 </template>
@@ -16,6 +17,7 @@ import axios from 'axios'
 // 1. 불러오기
 import TheSearchBar from '@/components/TheSearchBar.vue'
 import VideoList from '@/components/VideoList.vue'
+import VideoDetail from '@/components/VideoDetail.vue'
 
 const API_KEY = 'AIzaSyAkl5qS5bAYFgqLp2Vi-yO6ZHYv9994vLU'
 const API_URL = 'https://www.googleapis.com/youtube/v3/search'
@@ -25,12 +27,14 @@ export default {
     return {
       inputValue: null,
       videos: [],
+      selectVideo: null,
     }
   },
   components: {
     // 2. 등록하기
     TheSearchBar,
     VideoList,
+    VideoDetail,
   },
   methods: {
     onInputChange:function (inputText){
@@ -56,6 +60,9 @@ export default {
       .catch(err => {
         console.log(err)
       })
+    },
+    onVideoSelect: function(video){
+      this.selectVideo = video
     }
   }
 }

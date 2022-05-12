@@ -5,6 +5,7 @@
       v-for="(video, idx) in videos" 
       :key="idx"
       :video="video"
+      @select-video="onSelectVideo"
         >
       </video-list-item>
   </ul>
@@ -23,7 +24,11 @@ export default {
         videos: {
             type: Array,
             required: true,
-
+        }
+    },
+    methods: {
+        onSelectVideo: function(video){
+            this.$emit("select-video", video)
         }
     }
 }

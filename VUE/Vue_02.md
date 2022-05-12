@@ -119,8 +119,8 @@ $ npm run serve
   // About.vue
   <template>
   	<div>
-  	<h1> About</h1>
-  	<h2> {{ myMessage}} </h2>
+  	<h1> About </h1>
+  	<h2> {{ myMessage }} </h2>
   	</div>
   	</template>
   	
@@ -237,11 +237,7 @@ $ npm run serve
   //App.vue
   <template>
     <div id="app">
-      <img alt="Vue logo" src="./assets/logo.png">
     <!-- 3. 보여주기 -->
-    <!-- 카멜 케이스 -->
-    <!-- <TheAbout :my-message="parentData"/> -->
-    <!-- 케밥 케이스 -->
     <the-about 
       :parent-data="parentData" 
   	@childInputChange="parentGetChange"></the-about>
@@ -283,7 +279,7 @@ $ npm run serve
   </style>
   
   ```
-
+  
   
 
 ### Vue Router
