@@ -2,17 +2,18 @@
   <div>
       <div>
       <span 
-      @click="updateTodoStatus"
+      @click="updateTodoStatus(todo)"
       :class="{ 'is-completed' : todo.isCompleted}"
       >
       {{ todo.title }}
       </span>
-      <button @click="deleteTodo">[X]</button>
+      <button @click="deleteTodo(todo)">[X]</button>
   </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
     name: 'TodoListItem',
     props: {
@@ -22,12 +23,10 @@ export default {
         
         },
         methods: {
-            deleteTodo: function() {
-                this.$store.dispatch('deleteTodo', this.todo)
-            },
-            updateTodoStatus: function() {
-                this.$store.dispatch('updateTodoStatus', this.todo)
-            }
+            ...mapActions([
+                'deleteTodo',
+                'updateTodoStatus',
+            ])
         }
     }
 </script>

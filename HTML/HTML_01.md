@@ -4,6 +4,8 @@
 
 ### HTML(Hyper Text Markup Language)
 
+- 웹 페이지를 작성(구조화)하기 위한 언어
+
 - HTML 문서의 기본구조(!+tab)
 
   ```

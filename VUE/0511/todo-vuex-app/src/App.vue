@@ -12,6 +12,7 @@
 <script>
 import TodoList from '@/components/TodoList.vue'
 import TodoForm from '@/components/TodoForm.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'App',
@@ -29,7 +30,6 @@ export default {
     allTodosCount: function() {
       return this.$store.getters.allTodosCount
     }
-
   }
 }
 </script>

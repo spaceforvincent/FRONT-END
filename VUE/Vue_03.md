@@ -45,3 +45,22 @@
 
 
 
+### 로컬 스토리지
+
+- vuex state를 자동으로 브라우저의 localstorage에 저장해주는 라이브러리
+- 페이지가 새로고침 되어도 vuex state를 유지시킴
+
+```npm install vuex-persistedstate```
+
+```javascript
+//index.js
+
+import createPersistedState from 'vuex-persistedstate'
+
+export default new Vuex.Store({
+plugins: [
+    createPersistedState()
+]
+})
+```
+

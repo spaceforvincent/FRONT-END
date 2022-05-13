@@ -10,15 +10,16 @@
 
 <script>
 import TodoListItem from '@/components/TodoListItem.vue'
+import { mapState } from 'vuex'
 export default {
     name:'TodoList',
     components: {
         TodoListItem,
     },
     computed: {
-        todos: function() {
-            return this.$store.state.todos
-        }
+        ...mapState([
+            'todos',
+        ])
     }
 }
 </script>

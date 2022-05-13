@@ -307,7 +307,8 @@
 
   - 취소선 긋기
 
-  ```
+  ```vue
+  //todoListItem.vue
   <template>
     <div>
         <div>
@@ -350,3 +351,212 @@
   ```
 
   
+
+- Getters
+
+  - 완료된 todo 개수 계산
+
+  ```javascript
+  //index.js
+  getters: { //computed
+      completedTodosCount: function(state) {
+        return state.todos.filter(todo => {
+          return todo.isCompleted === true
+        }).length
+      },
+        uncompletedTodosCount: function(state) {
+        return state.todos.filter(todo => {
+          return todo.isCompleted === false
+        }).length
+      },
+        allTodoCount: function (state) {
+        return state.todos.length
+      },
+      },
+  ```
+
+  ```vue
+  //App.vue
+  <template>
+    <div id="app">
+      <h1> Todo List</h1>
+      <h2> Completed Todos : {{ completedTodosCount }} </h2>
+      <h2> Uncompleted Todos : {{ uncompletedTodosCount }} </h2>
+      <todo-list></todo-list>
+      <todo-form></todo-form>
+    </div>
+  </template>
+  
+  <script>
+  import TodoList from '@/components/TodoList.vue'
+  import TodoForm from '@/components/TodoForm.vue'
+  
+  export default {
+    name: 'App',
+    components: {
+      TodoList,
+      TodoForm,
+    },
+    computed: {
+      completedTodosCount: function() {
+        return this.$store.getters.completedTodosCount
+      },
+      uncompletedTodosCount: function() {
+        return this.$store.getters.uncompletedTodosCount
+      },
+  
+    }
+  }
+  ```
+
+  
+
+### component binding helper
+
+- mapState
+
+  - computed와 store의 state를 매핑
+  - 매핑된 computed의 이름이 state 이름과 같을 때 문자열 배열을 전달할 수 있음
+
+  ```vue
+  //todoList.vue
+  
+  computed: {
+          todos: function() {
+              return this.$store.state.todos
+          }
+      }
+  
+  //////////////////////////////////////////////////////////////////
+  
+  //todoList.vue
+  import { mapState } from 'vuex'
+  
+  computed: mapState([
+  	'todos', #computed의 내용이 중앙의 state로 넘어감
+  ])
+  
+  //////////////////////////////////////////////////////////////////
+  //하지만 다른 computed 값을 함께 사용할 수 없기 때문에 최종 객체를 computed에 전달할 수 있도록 다음과 같이 객체 전개 연산자로 객체를 복사하여 작성
+  computed: {
+  	...mapState([
+  	'todos'
+  	])
+  }
+  ```
+
+  
+
+- mapGetters
+
+  - computed와 getters를 매핑
+  - getters를 객체 전개 연산자로 계산하여 추가
+
+  ```
+  //App.vue
+  
+  computed: {
+      completedTodosCount: function() {
+        return this.$store.getters.completedTodosCount
+      },
+      uncompletedTodosCount: function() {
+        return this.$store.getters.uncompletedTodosCount
+      },
+      allTodosCount: function() {
+        return this.$store.getters.allTodosCount
+      }
+    }
+  ///////////////////////////////////////////////////////////////////
+  
+  import { mapState } from 'vuex'
+  
+  computed: {
+      // mapGetters 안에 정의한 메서드 중에서 아래 3개만 가져와서 Array에 추가
+      ...mapGetters([
+        'completedTodosCount',
+        'uncompletedTodosCount',
+        'allTodosCount',
+      ])
+    }
+  ```
+
+  
+
+- mapActions
+
+  - action을 전달하는 컴포넌트 method 옵션을 만듦
+  - actions를 객체 전개 연산자로 계산하여 추가하기
+
+  ```
+  //TodoListItem.vue
+  <template>
+    <div>
+        <div>
+        <span 
+        @click="updateTodoStatus"
+        :class="{ 'is-completed' : todo.isCompleted}"
+        >
+        {{ todo.title }}
+        </span>
+        <button @click="deleteTodo">[X]</button>
+    </div>
+    </div>
+  </template>
+  
+  <script>
+  export default {
+      name: 'TodoListItem',
+      props: {
+          todo: {
+              type: Object,
+          }
+          
+          },
+          methods: {
+              deleteTodo: function() {
+                  this.$store.dispatch('deleteTodo', this.todo)
+              },
+              updateTodoStatus: function() {
+                  this.$store.dispatch('updateTodoStatus', this.todo)
+              }
+          }
+      }
+  </script>
+  
+  ////////////////////////////////////////////////////////////////////////////
+  <template>
+    <div>
+        <div>
+        <span 
+        @click="updateTodoStatus(todo)"
+        :class="{ 'is-completed' : todo.isCompleted}"
+        >
+        {{ todo.title }}
+        </span>
+        <button @click="deleteTodo(todo)">[X]</button>
+    </div>
+    </div>
+  </template>
+  
+  <script>
+  import { mapActions } from 'vuex'
+  export default {
+      name: 'TodoListItem',
+      props: {
+          todo: {
+              type: Object,
+          }
+          
+          },
+          methods: {
+              ...mapActions([
+                  'deleteTodo',
+                  'updateTodoStatus',
+              ])
+          }
+      }
+  </script>
+  ```
+
+
+
