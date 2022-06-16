@@ -11,7 +11,7 @@
 - SFC (Single File Component)
   - Vue의 컴포넌트 기반 개발의 핵심 특징
   - 하나의 컴포넌트는 .vue 확장자를 가진 하나의 파일 안에서 작성되는 코드의 결과물
-  - 화면의 특정 역역에 대한 html, css, javascript 코드를 하나의 파일(.vue)에서 관리
+  - 화면의 특정 영역에 대한 html, css, javascript 코드를 하나의 파일(.vue)에서 관리
   - Vue 컴포넌트 === Vue 인스턴스 === .vue 파일
   - 한 화면 안에서도 기능별로 다른 컴포넌트가 존재
     - 하나의 컴포넌트는 여러개의 하위 컴포넌트를 가질 수 있음
@@ -300,7 +300,9 @@ $vue add router
 
 - index.js
   - 라우트에 관련된 정보 및 설정이 작성되는 곳
-
+  - {path : '/', name: 'Home', component: Homeview}
+    - path : 브라우저에서 접속하는 url 주소
+    - component : 지정된 path로 들어왔을 때 보여줄 vue 컴포넌트
 - App.vue
   - router-link 
     - 사용자 네비게이션을 가능하게 하는 컴포넌트
@@ -313,6 +315,40 @@ $vue add router
 - History mode
   - 브라우저의 히스토리는 남기지만 실제 페이지는 이동하지 않는 기능을 지원
   - 페이지를 다시 로드하지 않고 URL을 탐색할 수 있음
+- 404
+
+```vue
+// @/views/NotFound404.vue
+<template>
+<div>
+<h1>404 Not Found</h1>
+</div>
+</template>
+
+<script>
+export default {
+	name: 'NotFound404',
+}
+</script>
+
+// @/router/index.js
+const routes = [
+...
+{
+path:'/404',
+name: 'NotFound404'
+component: NotFound404
+}
+{
+path: '*', #등록되지 않은 모든 URL은 /404로 redirection
+redirect: '/404'
+}
+]
+```
+
+
+
+
 
 
 
@@ -409,10 +445,10 @@ const routes = [
 
 - components와 views
   - views/
-    - router(index.js)에 매핑되는 컴포넌트를 모아두는 폴더
+    - router(index.js)에 매핑되는 컴포넌트를 모아두는 폴더(페이지 화면)
     - ex) AboutView, HomeView
   - components/
-    - router에 매핑된 컴포넌트 내부에 작성하는 컴포넌트를 모아두는 폴더
+    - router에 매핑된 컴포넌트(view) 내부에 작성하는 컴포넌트를 모아두는 폴더
     - ex) Home 컴포넌트 내부에 HelloWorld 컴포넌트 등록
 
 - Vue Router가 필요한 이유
