@@ -315,6 +315,12 @@ $vue add router
 - History mode
   - 브라우저의 히스토리는 남기지만 실제 페이지는 이동하지 않는 기능을 지원
   - 페이지를 다시 로드하지 않고 URL을 탐색할 수 있음
+
+- 일반적인 작성 순서
+  - .vue
+  - Router -> index.js 등록
+  - App.vue에 router-link 등록
+
 - 404
 
 ```vue
