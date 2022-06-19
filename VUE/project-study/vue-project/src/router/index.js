@@ -16,7 +16,19 @@ import DataBindingClass2 from '../views/DataBinding/DataBindingClass2.vue'
 import DataBindingStyle from '../views/DataBinding/DataBindingStyle.vue'
 import DataBindingStyle2 from '../views/DataBinding/DataBindingStyle2.vue'
 import DataBindingList from '../views/DataBinding/DataBindingList.vue'
+import DataBindingList2 from '../views/DataBinding/DataBindingList2.vue'
 import renderingVif from '../views/Rendering/Renderingvif.vue'
+import EventClick from '../views/Event/EventClick.vue'
+import EventChange from '../views/Event/EventChange.vue'
+import Computed from '../views/ComputedWatch/Computed.vue'
+import Watch from '../views/ComputedWatch/Watch.vue'
+import NestedComponent from '../views/NestedComponent.vue'
+import ParentComponent from '../views/ParentToChild/ParentComponent.vue'
+import ParentComponentSecond from '../views/ParentToChild/ParentComponent2.vue'
+import ParentComponentThird from '../views/ParentToChild/ParentComponent3.vue'
+import ParentComponentFourth from '../views/ChildToParent/ParentComponent4.vue'
+import ParentComponentFifth from '../views/ParentToChild/ParentComponent5.vue'
+import ProvideInject from '../views/ProvideInject/ProvideInject.vue'
 
 const routes = [
   {
@@ -105,9 +117,69 @@ const routes = [
     component: DataBindingList
   },
   {
+    path:'/databindingList2',
+    name:'DataBindingList2',
+    component: DataBindingList2
+  },
+  {
     path:'/renderingvif',
     name:'renderingVif',
     component: renderingVif
+  },
+  {
+    path:'/eventclick',
+    name:'EventClick',
+    component: EventClick
+  },
+  {
+    path:'/eventchange',
+    name:'EventChange',
+    component: EventChange
+  },
+  {
+    path:'/computed',
+    name:'Computed',
+    component: Computed
+  },
+  {
+    path:'/watch',
+    name:'Watch',
+    component: Watch
+  },
+  {
+    path:'/nestedcomponent',
+    name:'NestedComponent',
+    component: NestedComponent
+  },
+  {
+    path:'/parentcomponent',
+    name:'ParentComponent',
+    component: ParentComponent
+  },
+  {
+    path:'/parentcomponent2',
+    name:'ParentComponentSecond',
+    component: ParentComponentSecond
+  },
+  {
+    path:'/parentcomponent3',
+    name:'ParentComponentThird',
+    component: ParentComponentThird
+  },
+  {
+    path:'/parentcomponent4',
+    name:'ParentComponentFourth',
+    component: ParentComponentFourth
+  },
+  {
+    path:'/parentcomponent5',
+    name:'ParentComponentFifth',
+    component: ParentComponentFifth
+  },
+  {
+    path:'/provideinject',
+    name:'ProvideInject',
+    component: ProvideInject
   },
 ]
 

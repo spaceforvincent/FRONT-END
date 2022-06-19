@@ -17,7 +17,19 @@
     <router-link to="/databindingstyle">DataBindingStyle</router-link> |
     <router-link to="/databindingstyle2">DataBindingStyle2</router-link> |
     <router-link to="/databindinglist">DataBindingList</router-link> |
-    <router-link to="/renderingvif">RenderingVif</router-link>
+    <router-link to="/databindinglist2">DataBindingList2</router-link> |
+    <router-link to="/renderingvif">RenderingVif</router-link> |
+    <router-link to="/eventclick">EventClick</router-link> |
+    <router-link to="/eventchange">EventChange</router-link> |
+    <router-link to="/computed">Computed</router-link> |
+    <router-link to="/watch">Watch</router-link> | 
+    <router-link to="/nestedcomponent">NestedComponent</router-link> | 
+    <router-link to="/parentcomponent">ParentComponent</router-link> | 
+    <router-link to="/parentcomponent2">ParentComponent2</router-link> | 
+    <router-link to="/parentcomponent3">ParentComponent3</router-link> | 
+    <router-link to="/parentcomponent4">ParentComponent4</router-link> | 
+    <router-link to="/parentcomponent5">ParentComponent5</router-link> | 
+    <router-link to="/provideinject">ProvideInject</router-link> | 
     <router-view/>
   </nav>
 </template>
