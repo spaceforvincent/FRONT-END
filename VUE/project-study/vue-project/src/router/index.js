@@ -29,6 +29,11 @@ import ParentComponentThird from '../views/ParentToChild/ParentComponent3.vue'
 import ParentComponentFourth from '../views/ChildToParent/ParentComponent4.vue'
 import ParentComponentFifth from '../views/ParentToChild/ParentComponent5.vue'
 import ProvideInject from '../views/ProvideInject/ProvideInject.vue'
+import CalculatorFirst from '../views/CompositionAPI/CompositionAPI.vue'
+import CalculatorSecond from '../views/CompositionAPI/CompositionAPI2.vue'
+import CalculatorThird from '../views/CompositionAPI/CompositionAPI3.vue'
+import CalculatorFourth from '../views/CompositionAPI/CompositionAPI4.vue'
+import CompositionAPIProvide from '../views/CompositionAPI/CompositionAPIProvide.vue'
 
 const routes = [
   {
@@ -180,6 +185,31 @@ const routes = [
     path:'/provideinject',
     name:'ProvideInject',
     component: ProvideInject
+  },
+  {
+    path:'/calculatorfirst',
+    name:'CalculatorFirst',
+    component: CalculatorFirst
+  },
+  {
+    path:'/calculatorsecond',
+    name:'CalculatorSecond',
+    component: CalculatorSecond
+  },
+  {
+    path:'/calculatorthird',
+    name:'CalculatorThird',
+    component: CalculatorThird
+  },
+  {
+    path:'/calculatorfourth',
+    name:'CalculatorFourth',
+    component: CalculatorFourth
+  },
+  {
+    path:'/compositionapiprovide',
+    name:'CompositionAPIProvide',
+    component: CompositionAPIProvide
   },
 ]
 

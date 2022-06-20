@@ -30,6 +30,11 @@
     <router-link to="/parentcomponent4">ParentComponent4</router-link> | 
     <router-link to="/parentcomponent5">ParentComponent5</router-link> | 
     <router-link to="/provideinject">ProvideInject</router-link> | 
+    <router-link to="/calculatorfirst">CalculatorFirst</router-link> | 
+    <router-link to="/calculatorsecond">CalculatorSecond</router-link> | 
+    <router-link to="/calculatorthird">CalculatorThird</router-link> | 
+    <router-link to="/calculatorfourth">CalculatorFourth</router-link> | 
+    <router-link to="/compositionapiprovide">CompositionAPIProvide</router-link> | 
     <router-view/>
   </nav>
 </template>
