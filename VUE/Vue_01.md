@@ -79,38 +79,113 @@
     - 속성 값은 단일 JS 표현식이 됨
     - 표현식의 값이 변경될 때 반응적으로 DOM에 적용하는 역할을 함
     - v-for : 사용 시 반드시 key 속성을 각 요소에 작성. v-if와 함께 사용하는 경우 v-for가 우선순위가 더 높음 (단, 가능하면 v-if 와 v-for을 동시에 사용하지 말 것)
+    - v-if : 조건을 만족하면 그 순간에 html 블록이 생성, 조건에 만족하지 않으면 html블록은 삭제
+    - v-show : 조건 만족 여부에 상관없이 무조건 html 블록이 생성되며, 조건을 만족하면 css의 display를 이용해서 화면에 보이게 되고, 조건을 만족하지 않으면 화면에서 숨기도록 처리가 됨 (조건의 만족여부에 상관없이 무조건 렌더링 됨)
+    
+    ```
+    v-if와 v-show를 사용할 때는 해당 html 블록이 화면 내에서 자주 toggle이 일어나면 v-show를 사용하고, toggle이 일어나는 빈도가 작다면 v-if를 사용하는 것이 좋음
+    * toggle : 하나의 값으로부터 다른 값으로 전환하는 행위
+    ```
+  
     - v-on : 엘리먼트에 이벤트 리스너를 연결. 약어 : '@'
+    
     - v-bind : HTML 요소의 속성에 Vue의 상태 데이터를 값으로 할당. 약어 : ':'
+    
     - v-model : HTML form 요소의 값과 data를 양방향 바인딩
-  
-    - computed : 데이터를 기반으로 하는 계산된 속성. 함수가 아닌 함수의 반환 값이 바인딩 됨. 종속된 데이터가 변경될 때만 함수를 실행. 종속 대상을 따라 저장됨. (종속된 대상이 변경되지 않는 한 computed에 작성된 함수를 여러번 호출해도 계산을 다시 하지 않고 계산되어 있던 결과를 반환). 어떤 데이터에도 의존하지 않는 computed 속성의 경우 절대로 업데이트 되지 않음. 반드시 반환 값이 있어야 함. (methods를 호출하면 렌더링을 다시 할 때마다 항상 함수를 실행)
-  
-      *computed : '특정 값이 변동하면 해당 값을 다시 계산해서 보여준다. 계산해야 하는 목표 데이터를 정의'(선언형) vs watch : '특정 값이 변동하면 다른 작업을 한다.(특정 대상이 변경되었을 때 콜백 함수를 실행시키기 위한 트리거. 명령형)
-  
+    
+    - computed : 정의된 데이터 값을 바탕으로 새로운 데이터 값 생성하고, 새로운 데이터 값에서 참조하고 있는 기존 데이터 값의 변경을 감지한다. 그리고 참조하고 있는 데이터의 값의 변경과 상관 없이 최초에 computed에 정의된 데이터 함수를 실행한다.
+    
+      - 특정 값이 변동하면 해당 값을 다시 계산해서 보여준다. 계산해야 하는 목표 데이터를 정의'(선언형)
+      - 함수의 형태로 정의하지만 함수가 아닌 함수의 반환값이 바인딩 됨
+    
+      ```vue
+      <template>
+      
+      <div>
+      <h1>Full Name : {{fullName}}</h1>
+      </div>
+      </template>
+      <script>
+      export default {
+      
+          name: 'ComputedPractice',
+      
+      
+          data() {
+      
+              return {
+      
+                  firstName: 'Hyeokju',
+                  lastName: 'Choi'
+      
+          };
+      
+      },
+          computed: {
+              fullName() {
+                  return this.firstName + ' ' + this.lastName
+              }
+          },
+      
+      }
+      
+      </script>
+      ```
+    
+      - watch : 초기에 할당된 값에서 변경이 일어나야 watch에 정의한 함수를 실행한다.
+        - 특정 값이 변동하면 다른 '작업'을 한다.(특정 대상이 변경되었을 때 콜백 함수를 실행시키기 위한 트리거. 명령형)
+    
+      ```vue
+      <template>
+      
+      <div>
+      <h1>Full Name : {{fullName}}</h1>
+      <button type="button" @click="changeName">변경</button>
+      </div>
+      </template>
+      <script>
+      export default {
+      
+          name: 'WatchPractice',
+      
+          components:{}, 
+      
+          data() {
+      
+              return {
+      
+                  firstName: 'Hyeokju',
+                  lastName: 'Choi',
+                  fullName: ''
+      
+          };
+      
+      },
+          watch: {
+              firstName() {
+                  this.fullName = this.firstName + ' ' + this.lastName
+              },
+              lastName() {
+                  this.fullName = this.firstName + ' ' + this.lastName
+              }
+          },
+      
+          methods: {
+              changeName (){
+                  this.firstName = 'Eunsol'
+              }
+          }
+      }
+      
+      </script>
+      ```
+    
     - filter : 텍스트 형식화를 적용할 수 있는 필터. interpolation 혹은 v-bind를 이용할 때 사용 가능. 마지막에 파이프("|")와 함께 추가되어야 함
 
 
 
-### 데이터 바인딩
+### Lifecycle Hooks
 
-```vue
-<template>
-
-<div>
-<h1>Hello, {{title}}</h1>
-</div>
-</template>
-<script>
-export default {
-
-  data() {
-
-    return {
-		
-      title: 'world'
-  };
-
-}
-</script>
-```
+- created : vue 컴포넌트가 생성된 후 호출. 애플리케이션의 초기 데이터를 API요청을 통해 불러올 수 있음
+- mounted : DOM(HTML)에 접근.
 

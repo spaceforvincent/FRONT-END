@@ -97,9 +97,9 @@ $ npm run serve
 
 - 컴포넌트 등록 3단계
 
-  - 불러오기(import)
-  - 등록하기(register)
-  - 보여주기(print)
+  - 불러오기(import) : ```import ComponentA from '../components/CompontA' ```
+  - 등록하기(register)  : ```components: {ComponentA}```
+  - 보여주기(print): ```<Component A/>```
 
 - static props 작성
 
@@ -139,11 +139,11 @@ $ npm run serve
     - 부모에서 데이터가 업데이트 될 때마다 자식 데이터로도 전달됨
 
     ```javascript
-    //App,vue
+    //App.vue
     <template>
       <div id="app">
         <img alt="Vue logo" src="./assets/logo.png">
-    		<about :my-message="parentData"></about> #v-bind 사용
+    		<about :my-message="parentData"></about> //v-bind 사용
     		</div>
     		</template>
     		
@@ -156,7 +156,7 @@ $ npm run serve
       components: {
         About,
       },
-      data: function() { //컴포넌트의 data는 반드시 함수여야 함
+      data () { //컴포넌트의 data는 반드시 함수여야 함
         return {
           parentData: "This is parent data to child component"
         }
@@ -168,8 +168,8 @@ $ npm run serve
     <template>
     	<div>
     	<h1> About</h1>
-    	<h2> {{ myMessage}} </h2>
-    	<h2>{{ parentData}} </h2>
+    	<h2> {{ myMessage }} </h2>
+    	<h2>{{ parentData }} </h2>
     	</div>
     	</template>
     	
@@ -185,6 +185,47 @@ $ npm run serve
     	
     
     ```
+
+  - Prop 유효성 검사
+
+  ```vue
+  <script>
+  props: {
+  //기본 타입 체크 ('null'과 'undefined'는 모든 타입 유효성 검사를 통과)
+  	propA: Number, //Number타입 체크
+    propB: [String, Number] //여러 타입 허용
+    propC : { //문자형이고 부모 컴포넌트로부터 반드시 데이터가 필수로 전달되어야 함 
+      type: String,
+      required : True
+    },
+    propD : { //기본값 100을 갖는 숫자형
+      type: Number,
+      default : 100
+    },
+    propE : { //기본값을 갖는 객체 타입
+      type : Object,
+      default() {
+        //객체나 배열의 기본값은 항상 팩토리 함수로부터 반환되어야 함
+        return {message: 'hello'}
+      }
+    },
+    propF : { //커스텀 유효성 검사 함수
+      validator: function(value) {
+        // 값이 꼭 아래 세 문자열 중 하나와 일치해야 함
+        return ['success','warning','danger'].indexOf(value) !== -1
+      }
+    },
+    propG : {
+      type: Function,
+        default (){
+          return 'Default function'
+        }
+    }
+  }
+    </script>
+  ```
+
+  
 
 - emit evevnt
 
@@ -320,6 +361,40 @@ $vue add router
   - .vue
   - Router -> index.js 등록
   - App.vue에 router-link 등록
+- Router 구조 분석
+  - vue에서 파일을 서버에서 불러오는 데는 3가지 방식이 있음
+    - ``import ~ from ~ & component : ~`` : 이렇게 쓰면은 사용자가 처음 접속할 때 서버에서 무조건 불러옴. 사용자가 100% 들어오게 될 곳
+    - `webpackChunkName: ~` : 크기가 가벼워서 메뉴를 클릭할 때 서버에서 받아와도 별로 문제가 안되는 애들 그룹
+    - `webpackChunkName: ~, webpackPrefetch:true` : 크기가 커서 메뉴를 클릭할때 서버에서 받아오면 늘어질 것 같은 애들 그룹. 미리 받아놓기
+
+```javascript
+import { createRouter, createWebHistory } from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+
+const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView  
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import(/* webpackChunkName: "about", webpackPrefetch:true */ '../views/AboutView.vue')
+  }
+  
+]
+
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
+
+export default router
+
+```
+
+
 
 - 404
 
