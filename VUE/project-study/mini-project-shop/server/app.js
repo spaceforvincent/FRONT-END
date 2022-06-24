@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
 const session = require("express-session");
+const fs = require("fs");
 
 app.use(
   session({
@@ -17,6 +18,14 @@ app.use(
 const server = app.listen(3000, () => {
   console.log("Server started. port 3000.");
 });
+
+let sql = require("./sql.js");
+
+fs.watchFile(__dirname + '/sql.js', (curr,prev) => {
+    console.log('sql 변경 시 서버 재시작 없이 반영되도록 함')
+    delete require.cache[require.resolve('./sql.js')]
+    sql = require("./sql.js")
+})
 
 const db = {
   database: "dev",
@@ -38,12 +47,22 @@ app.post("/api/logout", async (request, res) => {
   res.send("ok");
 });
 
-const sql = require("./sql.js");
+
 //로그인, 로그아웃 제외한 모든 값
-app.post("/api/:alias", async (request, res) => {
+app.post("/apirole/:alias", async (request, res) => {
   if (!request.session.email) {
     return res.status(401).send({ error: "You need to login." });
   }
+  try {
+    res.send(await req.db(request.params.alias));
+  } catch (err) {
+    res.status(500).send({
+      error: err,
+    });
+  }
+});
+
+app.post("/api/:alias", async (request, res) => {
   try {
     res.send(await req.db(request.params.alias));
   } catch (err) {
