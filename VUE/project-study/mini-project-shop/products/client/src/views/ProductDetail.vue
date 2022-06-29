@@ -72,7 +72,7 @@
                 {{ productDetail.product_name }}
               </h5>
               <h5 class="card-title pt-3 pb-3 border-top">
-                {{ productDetail.product_price }}원
+                {{ getCurrencyFormat(productDetail.product_price) }}원
               </h5>
               <p class="card-text border-top pt-3">
                 <span class="badge bg-dark me-1">{{
@@ -86,8 +86,8 @@
                 }}</span>
               </p>
               <p class="card-text pb-3">
-                배송비 {{ productDetail.delivery_price }}원 | 도서산관(제주도)
-                배송비 추가 {{ productDetail.add_delivery_price }}원 | 택배배송
+                배송비 {{ getCurrencyFormat(productDetail.delivery_price) }}원 | 도서산관(제주도)
+                배송비 추가 {{ getCurrencyFormat(productDetail.add_delivery_price) }}원 | 택배배송
                 | {{ productDetail.outbound_days }}일이내 출고 (주말, 공휴일
                 제외)
               </p>
@@ -98,7 +98,10 @@
                   </div>
                   <div class="col-auto">
                     <div class="input-group">
-                      <span class="input-group-text" style="cursor: pointer" @click="calculatePrice(-1)"
+                      <span
+                        class="input-group-text"
+                        style="cursor: pointer"
+                        @click="calculatePrice(-1)"
                         >-</span
                       >
                       <input
@@ -107,7 +110,10 @@
                         style="width: 40px"
                         v-model="total"
                       />
-                      <span class="input-group-text" style="cursor: pointer" @click="calculatePrice(+1)"
+                      <span
+                        class="input-group-text"
+                        style="cursor: pointer"
+                        @click="calculatePrice(+1)"
                         >+</span
                       >
                     </div>
@@ -118,7 +124,7 @@
                     <h3>총 상품 금액</h3>
                   </div>
                   <div class="col-6" style="text-align: right">
-                    <h3>{{ totalPrice }}</h3>
+                    <h3>{{ getCurrencyFormat(totalPrice) }}원</h3>
                   </div>
                 </div>
                 <div class="d-flex justify-content-between align-item-center">
@@ -163,12 +169,16 @@ export default {
     this.getProductImage()
   },
   methods: {
-    calculatePrice (cnt) {
+    calculatePrice(cnt) {
       let total = this.total + cnt
       if (total < 1) {
         total = 1
       }
       this.total = total
+      this.totalPrice = this.productDetail.product_price * this.total
+    },
+    getCurrencyFormat(value) {
+      return this.$currencyFormat(value)
     },
     async getProductDetail() {
       const productDetail = await this.$api('/api/productDetail', {
@@ -177,6 +187,7 @@ export default {
       // 데이터 가지고 오면
       if (productDetail.length > 0) {
         this.productDetail = productDetail[0]
+        this.totalPrice = this.productDetail.product_price * this.total
       }
       console.log(this.productDetail)
     },

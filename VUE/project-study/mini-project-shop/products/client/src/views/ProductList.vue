@@ -1,5 +1,4 @@
 <template>
-  <div>
     <main class="mt-3">
       <div class="container">
         <div class="row mb-3">
@@ -13,7 +12,6 @@
           </div>
         </div>
       </div>
-      <div class="container">
         <div class="row g-3">
           <div
             class="col-xl-3 col-lg-4 col-md-6"
@@ -64,9 +62,7 @@
             </div>
           </div>
         </div>
-      </div>
     </main>
-  </div>
 </template>
 
 <script>
