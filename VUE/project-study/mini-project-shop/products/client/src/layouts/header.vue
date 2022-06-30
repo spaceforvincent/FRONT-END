@@ -26,8 +26,8 @@
               >제품상세페이지</router-link
             >
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/create"
+          <li v-if="user.email!=undefined" class="nav-item">
+            <router-link class="nav-link" to="/sales"
               >제품등록페이지</router-link
             >
           </li>

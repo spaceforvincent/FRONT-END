@@ -11,7 +11,6 @@
             </select>
           </div>
         </div>
-      </div>
         <div class="row g-3">
           <div
             class="col-xl-3 col-lg-4 col-md-6"
@@ -61,6 +60,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
     </main>
 </template>
