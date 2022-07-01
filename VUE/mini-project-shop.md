@@ -382,3 +382,331 @@ export default router
 
 ```
 
+6. vue.config.js
+
+```js
+const { defineConfig } = require('@vue/cli-service')
+const target = "http://127.0.0.1:3000"
+
+
+module.exports = defineConfig({
+  transpileDependencies: true,
+  devServer : {
+    port:8080,
+    proxy:{
+      '^/api' : {
+        target,
+        changeOrigin: true
+      }
+    }
+
+  }
+},
+
+)
+
+```
+
+7. npm i axios --save
+8. src -> mixins.js 
+
+```js
+import axios from 'axios'
+
+export default {
+  methods: {
+    async $api(url, data) {
+      return (
+        await axios({
+          method: 'post',
+          url,
+          data
+        }).catch((e) => {
+          console.log(e)
+        })
+      ).data
+    },
+    $currencyFormat(value, format = '#,###') {
+      if (value === 0 || value === null) return 0
+
+      let currency = format.substring(0, 1)
+      if (currency === '$' || currency === '₩') {
+        format = format.substring(1, format.length)
+      } else {
+        currency = ''
+      }
+
+      let groupingSeparator = ','
+      let maxFractionDigits = 0
+      let decimalSeparator = '.'
+      if (format.indexOf('.') === -1) {
+        groupingSeparator = ','
+      } else {
+        if (format.indexOf(',') < format.indexOf('.')) {
+          groupingSeparator = ','
+          decimalSeparator = '.'
+          maxFractionDigits = format.length - format.indexOf('.') - 1
+        } else {
+          groupingSeparator = '.'
+          decimalSeparator = ','
+          maxFractionDigits = format.length - format.indexOf(',') - 1
+        }
+      }
+
+      let prefix = ''
+      let d = ''
+      // v = String(parseFloat(value).toFixed(maxFractionDigits));
+
+      let dec = 1
+      for (let i = 0; i < maxFractionDigits; i++) {
+        dec = dec * 10
+      }
+
+      let v = String(Math.round(parseFloat(value) * dec) / dec)
+
+      if (v.indexOf('-') > -1) {
+        prefix = '-'
+        v = v.substring(1)
+      }
+
+      if (
+        maxFractionDigits > 0 &&
+        format.substring(format.length - 1, format.length) === '0'
+      ) {
+        v = String(parseFloat(v).toFixed(maxFractionDigits))
+      }
+
+      if (maxFractionDigits > 0 && v.indexOf('.') > -1) {
+        d = v.substring(v.indexOf('.'))
+        d = d.replace('.', decimalSeparator)
+        v = v.substring(0, v.indexOf('.'))
+      }
+      const regExp = /\D/g
+      v = v.replace(regExp, '')
+      const r = /(\d+)(\d{3})/
+      while (r.test(v)) {
+        v = v.replace(r, '$1' + groupingSeparator + '$2')
+      }
+
+      return prefix + currency + String(v) + String(d)
+    }
+  }
+}
+
+```
+
+9. Main.js
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import mixins from './mixins'
+
+createApp(App).use(store).use(router).mixin(mixins).mount('#app')
+
+```
+
+10. productList.vue, productDetail 작성
+11. 카카오 로그인
+
+- npm install dotenv
+- Client -> .env 생성 -> VUE_APP_KAKAOJS = "~"
+- Client -> webpack.config.js
+
+```js
+const Dotenv = require("dotenv-webpack");
+
+module.exports = {
+  plugins: [new Dotenv()],
+
+  resolve: {
+    fallback: {
+      fs: false,
+      path: false,
+      os: false,
+    },
+  },
+};
+
+```
+
+- Main.js
+
+```js
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+import mixins from './mixins'
+// import 'bootstrap'
+// import 'bootstrap/dist/css/bootstrap.min.css'
+
+createApp(App).use(store).use(router).mixin(mixins).mount('#app')
+
+const KAKAOJS_API_KEY = process.env.VUE_APP_KAKAOJS
+window.kakao.init(KAKAOJS_API_KEY)
+
+```
+
+- 카카오 개발자 -> 앱 생성 -> 카카오 로그인 활성화 -> 플랫폼 등록 -> [내 애플리케이션] > [카카오 로그인] > [동의항목]에서 설정하지 않은 동의항목을 제외하고 재요청
+
+- Header.vue
+
+```vue
+<template>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Soldout</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/">홈</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link active" to="/">제품리스트</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/detail"
+              >제품상세페이지</router-link
+            >
+          </li>
+          <li v-if="user.email!=undefined" class="nav-item">
+            <router-link class="nav-link" to="/create"
+              >제품등록페이지</router-link
+            >
+          </li>
+          <li v-if="user.email==undefined">
+            <button class="btn btn-danger" type="button" @click="kakaoLogin">
+              로그인
+            </button>
+          </li>
+            <li v-else>
+            <button class="btn btn-danger" type="button" @click="kakaoLogout">
+              로그아웃
+            </button>
+            </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+</template>
+<script>
+export default {
+  name: 'HeaderComponent',
+  computed: {
+    user() {
+      return this.$store.state.user
+    }
+  },
+  methods: {
+    kakaoLogin() {
+      window.Kakao.Auth.login({
+        scope: 'profile_nickname, account_email, gender',
+        success: this.getProfile
+      })
+    },
+    getProfile(authOb) {
+      console.log(authOb)
+      window.Kakao.API.request({
+        url: '/v2/user/me',
+        success: (res) => {
+          const kakaoAccount = res.kakao_account
+          console.log(kakaoAccount)
+          this.login(kakaoAccount)
+          alert('로그인 성공')
+        }
+      })
+    },
+    async login(kakaoAccount) {
+      await this.$api('/api/login', {
+        param: [
+          {
+            email: kakaoAccount.email,
+            nickname: kakaoAccount.profile.nickname
+          }, // set
+          { nickname: kakaoAccount.profile.nickname } // update
+        ]
+      })
+
+      this.$store.commit('user', kakaoAccount)
+    },
+    kakaoLogout() {
+      window.Kakao.Auth.logout((response) => {
+        this.$store.commit('user', {})
+        alert('로그아웃')
+      })
+    }
+  }
+}
+</script>
+
+```
+
+- Store.js
+
+```js
+import { createStore } from 'vuex'
+
+const store = createStore({
+  state() {
+    return {
+      user: {}
+    }
+  },
+  mutations: {
+    user(state, data) {
+      state.user = data
+    }
+  }
+})
+
+export default store
+
+```
+
+- ```npm i vuex-persistedstate```
+- store.js
+
+```js
+import { createStore } from 'vuex'
+import persistedstate from 'vuex-persistedstate'
+const store = createStore({
+  state() {
+    return {
+      user: {}
+    }
+  },
+  mutations: {
+    user(state, data) {
+      state.user = data
+    }
+  },
+  plugins: [
+    persistedstate({
+      paths: ['user']
+    })
+  ]
+})
+
+export default store
+
+```
+
+- npm i vue-sweetalert2
