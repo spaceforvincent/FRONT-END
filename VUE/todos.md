@@ -59,9 +59,7 @@
       components: {
           TodoListItem,
       },
-      //현재 state의 todo는 값이 변화하는 것이 아님
-      //store에 저장된 todo 목록을 가져오는 것이기 때문에 매번 새로 호출하는 것은 비효율적
-      //대신 todo가 추가 되는 등의 변경사항이 있을 때만 새로 계산한 값을 반환하는 방향으로 변경
+      //todo가 추가 되는 등의 변경사항이 있을 때만 새로 계산한 값을 반환하는 방향으로 변경
       computed: { 
           todos: function() {
               return this.$store.state.todos
@@ -121,13 +119,14 @@
 
   - Actions & Mutations
     - CreateTodo 메서드를 통해 createTodo Action 함수 호출
+    - V-model.trim : 띄어쓰기 날리기
 
   ```vue
   //todoform.vue
   <template>
     <div>
         <input type="text"
-        v-model.trim="todoTitle"
+        v-model.trim="todoTitle" 
         @keyup.enter="createTodo"
         >
         <button @click="createTodo">Add</button>
@@ -144,7 +143,7 @@
           }
       },
       method: {
-        createTodo: function() {
+        createTodo () {
               const todoItem = {
                   title: this.todoTitle,
                   isCompleted: false,
@@ -170,14 +169,16 @@
     state: { //data
       todos: [],
     },
-  	mutations: { //methods => change
-      CREATE_TODO: function(state, todoItem){
+  	mutations: { //methods => change state
+      CREATE_TODO (state, todoItem){
         state.todos.push(todoItem)
+        //Mutations 함수의 이름은 상수로 작성하는 것을 권장
       },
     },
     actions: { //methods => !change
-      createTodo: function(context, todoItem) {
-        context.commit('CREATE_TODO', todoItem)
+      createTodo ({ commit }, todoItem) {
+        commit('CREATE_TODO', todoItem)
+        //commit을 활용하여 mutations에 접근
       },
     },
   ```
@@ -225,19 +226,20 @@
   //index.js
   
    actions: { //methods => !change
-      createTodo: function(context, todoItem) {
-        context.commit('CREATE_TODO', todoItem)
+      createTodo ({ commit }, todoItem) {
+        commit('CREATE_TODO', todoItem)
       },
-      deleteTodo: function(context, todoItem) {
-        context.commit('DELETE_TODO', todoItem)
+      deleteTodo ({ commit }, todoItem) {
+        if (confirm('진짜 삭제하실?')) {
+        commit('DELETE_TODO', todoItem)
       },
    }
   
    mutations: { //methods => change
-      CREATE_TODO: function(state, todoItem){
+      CREATE_TODO (state, todoItem){
         state.todos.push(todoItem)
       },
-      DELETE_TODO: function(state, todoItem) {
+      DELETE_TODO (state, todoItem) {
         const index= state.todos.indexOf(todoItem)
         state.todos.splice(index, 1) //array의 인덱스에 있는 요소를 하나만 제거
       },
@@ -250,7 +252,7 @@
 
   - updateTodoStatus action 함수 호출
 
-  ```
+  ```vue
   //todoListItem.vue
   <template>
     <div>
@@ -303,6 +305,23 @@
         context.commit('UPDATE_TODO_STATUS', todoItem)
       }
     },
+  mutations: { //methods => change
+      CREATE_TODO (state, todoItem){
+        state.todos.push(todoItem)
+      },
+      DELETE_TODO (state, todoItem) {
+        const index= state.todos.indexOf(todoItem)
+        state.todos.splice(index, 1) //array의 인덱스에 있는 요소를 하나만 제거
+      },
+      UPDATE_TODO_STATUS(state,todoItem) {
+        state.todos = state.todos.map(todo => {
+          if (todo === todoItem) {
+            todo.isCompleted = !todo.isCompleted
+          }
+          return todo
+        })
+      }
+    },
   ```
 
   - 취소선 긋기
@@ -343,7 +362,7 @@
       }
   </script>
   
-  <style scoped>
+  <style scoped> #scoped : 이 컴포넌트 안에서만 사용할 스타일
       .is-completed {
           text-decoration:line-through;
       }
@@ -359,17 +378,17 @@
   ```javascript
   //index.js
   getters: { //computed
-      completedTodosCount: function(state) {
+      completedTodosCount (state) {
         return state.todos.filter(todo => {
           return todo.isCompleted === true
         }).length
       },
-        uncompletedTodosCount: function(state) {
+        uncompletedTodosCount (state) {
         return state.todos.filter(todo => {
           return todo.isCompleted === false
         }).length
       },
-        allTodoCount: function (state) {
+        allTodoCount (state) {
         return state.todos.length
       },
       },
@@ -432,7 +451,8 @@
   //todoList.vue
   import { mapState } from 'vuex'
   
-  computed: mapState([
+  computed: {
+  ...mapState([
   	'todos', #computed의 내용이 중앙의 state로 넘어감
   ])
   
@@ -452,7 +472,7 @@
   - computed와 getters를 매핑
   - getters를 객체 전개 연산자로 계산하여 추가
 
-  ```
+  ```vue
   //App.vue
   
   computed: {
@@ -468,7 +488,7 @@
     }
   ///////////////////////////////////////////////////////////////////
   
-  import { mapState } from 'vuex'
+  import { mapGetters } from 'vuex'
   
   computed: {
       // mapGetters 안에 정의한 메서드 중에서 아래 3개만 가져와서 Array에 추가
@@ -486,8 +506,9 @@
 
   - action을 전달하는 컴포넌트 method 옵션을 만듦
   - actions를 객체 전개 연산자로 계산하여 추가하기
-
-  ```
+  - Actions의 'deleteTodo' 함수를 바로 쓰고 싶다!
+  
+  ```vue
   //TodoListItem.vue
   <template>
     <div>
@@ -530,10 +551,10 @@
         <span 
         @click="updateTodoStatus(todo)"
         :class="{ 'is-completed' : todo.isCompleted}"
-        >
+        > 
         {{ todo.title }}
         </span>
-        <button @click="deleteTodo(todo)">[X]</button>
+        <button @click="deleteTodo(todo)">[X]</button> 
     </div>
     </div>
   </template>
@@ -558,5 +579,5 @@
   </script>
   ```
 
-
+- updateTodo(todo) : updatetodo 걸어두고 실행할 때 todo 함께 넘김
 
