@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.js": "/FRONT-END/static/js/main.437b4182.js",
-    "index.html": "/FRONT-END/index.html",
-    "main.437b4182.js.map": "/FRONT-END/static/js/main.437b4182.js.map"
+    "main.js": "/FRONT-END/REACT/movie/static/js/main.437b4182.js",
+    "index.html": "/FRONT-END/REACT/movie/index.html",
+    "main.437b4182.js.map": "/FRONT-END/REACT/movie/static/js/main.437b4182.js.map"
   },
   "entrypoints": [
     "static/js/main.437b4182.js"
