@@ -1,9 +1,16 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import Seo from "../components/Seo";
 import Link from "next/link";
 
 export default function Home() {
   const [movies, setMovies] = useState();
+  const router = useRouter();
+  const onClick = (id, title) => {
+    router.push(
+      `/movies/${title}/${id}` //브라우저에 보이는 url 마스킹
+    );
+  };
   useEffect(() => {
     (async () => {
       const { results } = await (await fetch(`/api/movies`)).json();
@@ -15,14 +22,18 @@ export default function Home() {
       <Seo title="Home" />
       {!movies && <h4>Loading...</h4>}
       {movies?.map((movie) => (
-        <Link href={`/movies/${movie.id}`}key={movie.id}>
-        <a>
-        <div className="movie">
+        <div
+          onClick={() => onClick(movie.id, movie.original_title)}
+          className="movie"
+          key={movie.id}
+        >
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <h4>
+            <Link href={`/movies/${movie.original_title}/${movie.id}`}>
+              <a>{movie.original_title}</a>
+            </Link>
+          </h4>
         </div>
-        </a>
-        </Link>
       ))}
       <style jsx>{`
         .container {
