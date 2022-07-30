@@ -5,9 +5,9 @@ import {
   Paper,
 } from "@material-ui/core";
 import HomeScreen from "./screens/HomeScreen";
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     h1: { fontWeight: "bold" },
     h2: {

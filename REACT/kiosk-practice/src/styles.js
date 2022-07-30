@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    height: "120vh",
+    height: "100vh",
     display: "flex",
     flexDirection: "column",
   },
@@ -38,4 +38,15 @@ export const useStyles = makeStyles((theme) => ({
   green: {
     backgroundColor: "#00b020",
   },
+  cards: {
+    display: 'flex',
+    justifyContent:'center',
+    alignItems:'center'
+  },
+  card: {
+    margin:10
+  },
+  space: {
+    padding:10
+  }
 }));
