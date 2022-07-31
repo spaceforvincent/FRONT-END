@@ -6,10 +6,9 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  mainBackground:{
-    backgroundColor: "#0F1DA0",
+  background: {
+    backgroundColor: "rgba(15, 29, 160, 0.65)",
     color: "#ffffff",
-    opacity: 0.65,
   },
   main: {
     flex: 1,
@@ -18,6 +17,12 @@ export const useStyles = makeStyles((theme) => ({
     display: "flex",
     color: "#ffffff",
   },
+  title: { marginTop: 30 },
+  ment: {
+    width: 200,
+    height: 200,
+  },
+
   center: {
     display: "flex",
     justifyContent: "center",
@@ -25,28 +30,30 @@ export const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   largeLogo: {
-    position: 'relative',
-    height: "40vh",
-    width: "40vh",
-    opacity: 1.0,
+    position: "relative",
+    display: "flex",
+    width: 300,
+    marginTop: 30,
+    marginBottom: 30,
   },
   MainButton: {
-    position:'relative',
-    height:"28vh",
-    widh:'28vh'
+    position: "relative",
+    height: 200,
+    width: 200,
   },
-  green: {
-    backgroundColor: "#00b020",
+  footer: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  MiniButton: {
+    position: "relative",
+    height: 90,
+    width: 90,
+    marginInline:5,
   },
   cards: {
-    display: 'flex',
-    justifyContent:'center',
-    alignItems:'center'
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
-  card: {
-    margin:10
-  },
-  space: {
-    padding:10
-  }
 }));

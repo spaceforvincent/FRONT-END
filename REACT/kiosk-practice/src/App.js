@@ -4,8 +4,13 @@ import {
   Container,
   Paper,
 } from "@material-ui/core";
-import HomeScreen from "./screens/HomeScreen";
 import { createTheme } from "@material-ui/core";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import HomeScreen from "./screens/HomeScreen";
+import LendScreen from "./screens/LendScreen";
+import RecommendScreen from "./screens/RecommendScreen";
+import ReturnScreen from "./screens/ReturnScreen";
+import SearchScreen from "./screens/SearchScreen";
 
 const theme = createTheme({
   typography: {
@@ -31,14 +36,22 @@ const theme = createTheme({
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Container maxWidth="sm">
-        <Paper>
-          <HomeScreen></HomeScreen>
-        </Paper>
-      </Container>
-    </ThemeProvider>
+    <BrowserRouter>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Container maxWidth="sm">
+          <Paper>
+            <Routes>
+            <Route path="/" element={<HomeScreen />} exact></Route>
+            <Route path="/rental" element={<LendScreen />} exact></Route>
+            <Route path="/return" element={<ReturnScreen />} exact></Route>
+            <Route path="/recommend" element={<RecommendScreen />} exact></Route>
+            <Route path="/search" element={<SearchScreen />} exact></Route>
+            </Routes>
+          </Paper>
+        </Container>
+      </ThemeProvider>
+    </BrowserRouter>
   );
 }
 

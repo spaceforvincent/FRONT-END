@@ -2,14 +2,14 @@ import React from "react";
 import { useStyles } from "../styles";
 import { Box, CardActionArea, Fade, Grid } from "@material-ui/core";
 import { ReactComponent as MainIcon } from "../images/Frame 1.svg";
-import { ReactComponent as BtnMiniReturn } from "../images/btnmini-return.svg";
-import { ReactComponent as BtnMiniRentalPressed } from "../images/btnmini-rental-pressed.svg";
+import { ReactComponent as BtnMiniReturnPressed } from "../images/btnmini-return-pressed.svg";
+import { ReactComponent as BtnMiniRental } from "../images/btnmini-rental.svg";
 import { ReactComponent as BtnMiniSearch } from "../images/btnmini-search.svg";
 import { ReactComponent as BtnMiniRecommend } from "../images/btnmini-recommend.svg";
-import { ReactComponent as LendTitle } from "../images/대여.svg";
+import { ReactComponent as ReturnTitle } from "../images/반납.svg";
 import { ReactComponent as BookUp } from "../images/도서를 올려주세요.svg";
 import { useNavigate } from 'react-router-dom';
-export default function LendScreen() {
+export default function ReturnScreen() {
   const styles = useStyles();
   const navigate = useNavigate();
   return (
@@ -18,7 +18,7 @@ export default function LendScreen() {
         <CardActionArea>
           <Box className={[styles.root, styles.background]}>
             <Box className={[styles.main, styles.center]}>
-              <LendTitle className={styles.title}></LendTitle>
+              <ReturnTitle className={styles.title}></ReturnTitle>
               <MainIcon className={styles.largeLogo}></MainIcon>
             </Box>
             <Box className={styles.center}>
@@ -27,8 +27,8 @@ export default function LendScreen() {
             <Box className={styles.center}>
               <Grid container>
                 <Grid item sm={3} className={styles.footer}>
-                  <BtnMiniRentalPressed className={styles.MiniButton}/>
-                  <BtnMiniReturn onClick={() => navigate('/return')} className={styles.MiniButton}/>
+                  <BtnMiniRental onClick={() => navigate('/rental')} className={styles.MiniButton}/>
+                  <BtnMiniReturnPressed className={styles.MiniButton}/>
                   <BtnMiniRecommend onClick={() => navigate('/recommend')} className={styles.MiniButton}/>
                   <BtnMiniSearch onClick={() => navigate('/search')} className={styles.MiniButton}/>
                 </Grid>
