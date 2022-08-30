@@ -26,7 +26,7 @@ export default function Projects({ projects }) {
     </Layout>
   );
 }
-//빌드 타임에 호출
+//각 요청때마다 호출
 export async function getServerSideProps() {
   const options = {
     method: "POST",
