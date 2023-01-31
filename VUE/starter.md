@@ -1,6 +1,6 @@
 1. vue create starter -> manually select features -> babel, router, vuex, linter 선택 -> 3.x -> history : y, standard config -> lint on save -> package.json -> save preset
 2. cd starter -> npm run serve
-3. Src -> .prettierrc 생성
+3. src -> .prettierrc 생성
 
 ```json
 {"semi":false, "bracketSpacing": true, "singleQuote": true, "useTabs": false, "trailingComma":"none", "printWidth": 80}
@@ -11,8 +11,6 @@
 ```json
 "rules": {"space-before-function-paren":"off"}
 ```
-
-
 
 1. npm run serve
 2. Components -> layout 폴더 생성 -> Header.vue
